@@ -9,7 +9,7 @@ Crear un producto Wearable que ofrezca al usuario opciones como la localización
 1. **Localización del llavero:** Envío de alertas de sonido mediante la aplicación móvil, lo que permite al usuario al usuario localizar el llavero si está en ubicaciones.
     - Codificación del módulo de localización por alertas
     - Armar circuito para módulo de localización
-    - Programación de módulo de localización (Aplicación Móvil)
+    - Programación de módulo de localización (Aplicación)
     - Armado de carcasa provisional de llavero
     - Pruebas de módulo de localización
 2. **Botón de pánico:** El botón de pánico permite al usuario enviar alertas de ayuda a una persona de confianza, en casos de emergencia.
@@ -17,7 +17,7 @@ Crear un producto Wearable que ofrezca al usuario opciones como la localización
     - Codificación de módulo Botón de pánico
     - Programación de módulo Botón de pánico (Aplicación)
     - Pruebas de Módulo Botón de Pánico
-3. **Pulso:** Medir el pulso cardíaco y mostrarlo en la aplicación.}
+3. **Pulso:** Medir el pulso cardíaco y mostrarlo en la aplicación.
     - Integración módulo Pulso Cardiaco
     - Codificación módulo pulso cardíaco
     - Programación de módulo pulso cardiaco (Aplicación)
