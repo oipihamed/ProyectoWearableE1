@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "413342669918",
+    "project_id": "llaveroint",
+    "storage_bucket": "llaveroint.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413342669918:android:33d676b0bfb159f14928cf",
+        "android_client_info": {
+          "package_name": "com.example.llavero_int"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413342669918-park6ig4siku89vq1ucdjopnmh1e2r3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpwIYh9tJ1LbjMM6u8sHiHcP_4_MkfeSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413342669918-park6ig4siku89vq1ucdjopnmh1e2r3b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
