@@ -7,6 +7,11 @@ Crear un producto Wearable que ofrezca al usuario opciones como la localización
 Ofrecer productos que destaquen por su facilidad de uso, potencia y capacidad de adaptación a múltiples actividades y a los nuevos entornos operativos, apostando por ofrecer el mejor servicio orientado al cliente.
 ## 
 ## 
+## V I D E O 
+![image](https://user-images.githubusercontent.com/72764702/185514578-a7ed26fc-4fc4-4c4a-bdaa-80def99bac09.png)
+https://photos.app.goo.gl/4A9xBbuWTadWvsSc6
+##
+##
 ## É P I C A S
 
 1. **Localización del llavero:** Envío de alertas de sonido mediante la aplicación móvil, lo que permite al usuario al usuario localizar el llavero si está en ubicaciones.
