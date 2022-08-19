@@ -2,10 +2,11 @@ import 'package:llavero_int/Views/fitness_app/fitness_app_theme.dart';
 import 'package:llavero_int/main.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-
+//Clase que muestra el card con la informacion del pulso recogida por el sensor
 class MediterranesnDietView extends StatelessWidget {
   final AnimationController? animationController;
   final Animation<double>? animation;
+ 
 
   const MediterranesnDietView(
       {Key? key, this.animationController, this.animation})

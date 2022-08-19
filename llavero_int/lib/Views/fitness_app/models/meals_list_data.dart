@@ -27,7 +27,7 @@ class MealsListData {
     MealsListData(
       imagePath: 'assets/fitness_app/lunch.png',
       titleTxt: 'Humedad',
-      kacl: 30,
+      kacl: 40,
       meals: <String>['No Lluvia,', 'Paraguas,'],
       startColor: '#738AE6',
       endColor: '#5C5EDD',

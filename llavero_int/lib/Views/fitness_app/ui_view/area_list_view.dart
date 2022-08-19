@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../fitness_app_theme.dart';
-
+//Clase que genera la vista y animacion a mostrar en el apartado de estadisticas de temperatura, pulso, etc...
 class AreaListView extends StatefulWidget {
   const AreaListView(
       {Key? key, this.mainScreenAnimationController, this.mainScreenAnimation})
@@ -16,6 +16,7 @@ class AreaListView extends StatefulWidget {
 class _AreaListViewState extends State<AreaListView>
     with TickerProviderStateMixin {
   AnimationController? animationController;
+  //Lista de imagenes a mostrar
   List<String> areaListData = <String>[
     'assets/fitness_app/area1.png',
     'assets/fitness_app/area2.png',
@@ -28,6 +29,7 @@ class _AreaListViewState extends State<AreaListView>
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
+    
   }
 
   @override

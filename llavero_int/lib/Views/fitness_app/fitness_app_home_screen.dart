@@ -1,4 +1,4 @@
-import 'package:llavero_int/Views/fitness_app/training/training_screen.dart';
+import 'package:llavero_int/Views/fitness_app/training/image.dart';
 import 'package:flutter/material.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fitness_app_theme.dart';
@@ -12,8 +12,9 @@ class FitnessAppHomeScreen extends StatefulWidget {
 
 class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     with TickerProviderStateMixin {
+  //Declaracion del la clase para control de animaciones
   AnimationController? animationController;
-
+//Lista que almacena los iconos a mostrar en la barra de menu 
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   Widget tabBody = Container(
@@ -22,12 +23,15 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   @override
   void initState() {
+    //Se recorre cada icono y por defecto se pone como no seleccionados
     tabIconsList.forEach((TabIconData tab) {
       tab.isSelected = false;
     });
+    //Se pone por defecto el primer icono como seleccionado para mostrar la animacion
     tabIconsList[0].isSelected = true;
 
     animationController = AnimationController(
+      //Duracion de la animacion
         duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = MyDiaryScreen(animationController: animationController);
     super.initState();
@@ -54,6 +58,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
               return Stack(
                 children: <Widget>[
                   tabBody,
+                  //Menu del fondo 
                   bottomBar(),
                 ],
               );
@@ -95,8 +100,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
                   return;
                 }
                 setState(() {
-                  // tabBody =
-                  //   TrainingScreen(animationController: animationController);
+                  tabBody = ImageFB();
                 });
               });
             }

@@ -6,7 +6,7 @@ import '../fitness_app_theme.dart';
 class GlassView extends StatelessWidget {
   final AnimationController? animationController;
   final Animation<double>? animation;
-
+//Muestra carda con vaso de vidrio a mostrar en la parte inferior de la vista principal
   const GlassView({Key? key, this.animationController, this.animation})
       : super(key: key);
   @override

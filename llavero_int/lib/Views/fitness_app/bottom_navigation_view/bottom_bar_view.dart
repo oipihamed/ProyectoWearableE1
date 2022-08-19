@@ -24,10 +24,13 @@ class _BottomBarViewState extends State<BottomBarView>
     with TickerProviderStateMixin {
   DatabaseReference reference =
       FirebaseDatabase.instance.ref().child("ledStatus");
+
   double ledOn = 0;
   double song = 0;
   double ledOff = 0;
   int alarma = 0;
+  double temp = 0;
+  double hum = 0;
   AnimationController? animationController;
 
   @override
@@ -266,8 +269,6 @@ class _BottomBarViewState extends State<BottomBarView>
     final snapshot = await reference.get();
     if (snapshot.value != null) {
       ledOn = double.parse(snapshot.child('ledOn').value.toString());
-      song = double.parse(snapshot.child('Song').value.toString());
-
       ledOff = double.parse(snapshot.child('ledOff').value.toString());
     }
   }

@@ -1,30 +1,77 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:llavero_int/Views/fitness_app/fitness_app_theme.dart';
 import 'package:flutter/material.dart';
-
-class BodyMeasurementView extends StatelessWidget {
-  final AnimationController? animationController;
-  final Animation<double>? animation;
-
-  const BodyMeasurementView(
-      {Key? key, this.animationController, this.animation})
+import 'package:llavero_int/main.dart';
+//Clase encargada de mostrar la informacion de la card de temperatura en la vista principal
+class BodyMeasurementView extends StatefulWidget {
+  BodyMeasurementView(
+      {Key? key, required this.animationController, required this.animation})
       : super(key: key);
+  final AnimationController animationController;
+  final Animation<double> animation;
+
+  @override
+  State<BodyMeasurementView> createState() => _BodyMeasurementViewState();
+}
+
+class _BodyMeasurementViewState extends State<BodyMeasurementView> {
+  //Instancia de la base de datos de firebase con la direccion de DBRT
+  DatabaseReference referenceT =
+      FirebaseDatabase.instance.ref("sensorTH/vTemp");
+  double temp = 0;
+  @override
+  void initState() {
+//Escuchador de la bd, si existe algun cambio se obtiene y se cambia en tiempo real
+    referenceT.onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value;
+      setT(double.parse(data.toString()));
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController!,
+      animation: widget.animationController,
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(
-          opacity: animation!,
+          opacity: widget.animation,
           child: new Transform(
             transform: new Matrix4.translationValues(
-                0.0, 30 * (1.0 - animation!.value), 0.0),
+                0.0, 30 * (1.0 - widget.animation.value), 0.0),
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 24, right: 24, top: 16, bottom: 18),
               child: Container(
                 decoration: BoxDecoration(
-                  color: FitnessAppTheme.white,
+                  gradient: temp > 30
+                      ? LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            HexColor('#FF6961'),
+                            HexColor('#FF6961').withOpacity(0.9),
+                            HexColor('##fdfd96').withOpacity(0.5),
+                          ],
+                        )
+                      : temp < 10
+                          ? LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                HexColor('#84b6f4'),
+                                HexColor('#84b6f4').withOpacity(0.9),
+                                HexColor('#84b6f4').withOpacity(0.5),
+                              ],
+                            )
+                          : LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                FitnessAppTheme.white,
+                                FitnessAppTheme.white,
+                              ],
+                            ),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8.0),
                       bottomLeft: Radius.circular(8.0),
@@ -71,8 +118,8 @@ class BodyMeasurementView extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 4, bottom: 3),
-                                    child: Text(
-                                      '34',
+                                    child: Text(//Datos de temperatura
+                                      temp.toString(),
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
@@ -85,7 +132,7 @@ class BodyMeasurementView extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 8, bottom: 8),
-                                    child: Text(
+                                    child: Text(//Tipo de dato C= Centigrado
                                       'C',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
@@ -108,26 +155,35 @@ class BodyMeasurementView extends StatelessWidget {
                                     children: <Widget>[
                                       Icon(
                                         Icons.access_time,
-                                        color: FitnessAppTheme.grey
-                                            .withOpacity(0.5),
+                                        color: temp < 30
+                                            ? FitnessAppTheme.grey
+                                                .withOpacity(0.5)
+                                            : FitnessAppTheme.grey
+                                                .withOpacity(0.0),
                                         size: 16,
                                       ),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 4.0),
-                                        child: Text(
-                                          TimeOfDay.now().toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily:
-                                                FitnessAppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            letterSpacing: 0.0,
-                                            color: FitnessAppTheme.grey
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
+                                        child: temp > 30
+                                            ? Image.asset(//Imagen a mostrar en caso de temp alta
+                                                'assets/fitness_app/derrite.png',
+                                                width: 80,
+                                                height: 80,
+                                              )
+                                            : Text(
+                                                TimeOfDay.now().toString(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      FitnessAppTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                  letterSpacing: 0.0,
+                                                  color: FitnessAppTheme.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ),
                                       ),
                                     ],
                                   ),
@@ -135,14 +191,22 @@ class BodyMeasurementView extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         top: 4, bottom: 14),
                                     child: Text(
-                                      'Recuerda usar bloqueador',
+                                      temp > 30//Mensaje a mostrar en caso de temp alta
+                                          ? 'Recuerda usar bloqueador'
+                                          : temp < 10
+                                              ? "Abrigate bien"
+                                              : "Que buen clima",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 12,
                                         letterSpacing: 0.0,
-                                        color: FitnessAppTheme.nearlyDarkBlue,
+                                        color: temp > 30
+                                            ? HexColor("#FF6961")
+                                            : temp < 10
+                                                ? HexColor("#84B6F4")
+                                                : HexColor("##77DD77"),
                                       ),
                                     ),
                                   ),
@@ -290,5 +354,11 @@ class BodyMeasurementView extends StatelessWidget {
         );
       },
     );
+  }
+
+  void setT(double data) {
+    setState(() {
+      temp = data;
+    });
   }
 }

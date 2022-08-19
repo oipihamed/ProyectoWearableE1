@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:llavero_int/Views/fitness_app/ui_view/wave_view.dart';
 import 'package:llavero_int/Views/fitness_app/fitness_app_theme.dart';
 import 'package:llavero_int/main.dart';
@@ -16,6 +17,25 @@ class WaterView extends StatefulWidget {
 }
 
 class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
+  DatabaseReference referenceT =
+      FirebaseDatabase.instance.ref("sensorTH/vTemp");
+  DatabaseReference referenceH = FirebaseDatabase.instance.ref("sensorTH/vHum");
+
+  double temp = 0;
+  double hum = 0;
+  @override
+  void initState() {
+    referenceT.onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value;
+      setT(double.parse(data.toString()));
+    });
+    referenceH.onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value;
+      setH(double.parse(data.toString()));
+    });
+    super.initState();
+  }
+
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
     return true;
@@ -36,7 +56,34 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                   left: 24, right: 24, top: 16, bottom: 18),
               child: Container(
                 decoration: BoxDecoration(
-                  color: FitnessAppTheme.white,
+                  gradient: hum > 80
+                      ? LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            FitnessAppTheme.nearlyDarkBlue,
+                            FitnessAppTheme.nearlyDarkBlue.withOpacity(0.9),
+                            FitnessAppTheme.nearlyDarkBlue.withOpacity(0.5),
+                          ],
+                        )
+                      : hum < 50
+                          ? LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                FitnessAppTheme.nearlyWhite,
+                                FitnessAppTheme.nearlyWhite,
+                              ],
+                            )
+                          : LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                FitnessAppTheme.nearlyDarkBlue,
+                                FitnessAppTheme.nearlyDarkBlue.withOpacity(0.5),
+                                FitnessAppTheme.nearlyDarkBlue.withOpacity(0.2),
+                              ],
+                            ),
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(8.0),
                       bottomLeft: Radius.circular(8.0),
@@ -69,13 +116,15 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                       padding: const EdgeInsets.only(
                                           left: 4, bottom: 3),
                                       child: Text(
-                                        '60',
+                                        hum.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 32,
-                                          color: FitnessAppTheme.nearlyDarkBlue,
+                                          color: hum > 80
+                                              ? Colors.white
+                                              : FitnessAppTheme.nearlyDarkBlue,
                                         ),
                                       ),
                                     ),
@@ -100,7 +149,11 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                   padding: const EdgeInsets.only(
                                       left: 4, top: 2, bottom: 14),
                                   child: Text(
-                                    'humedad adecuada',
+                                    hum > 80
+                                        ? 'Humedad alta'
+                                        : hum > 50
+                                            ? 'Humedad media'
+                                            : 'Humedad adecuada',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: FitnessAppTheme.fontName,
@@ -139,7 +192,9 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                       Padding(
                                         padding: const EdgeInsets.only(left: 4),
                                         child: Icon(
-                                          Icons.access_time,
+                                          hum > 80
+                                              ? Icons.thumb_down
+                                              : Icons.thumb_up,
                                           color: FitnessAppTheme.grey
                                               .withOpacity(0.5),
                                           size: 16,
@@ -149,7 +204,9 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                         padding:
                                             const EdgeInsets.only(left: 4.0),
                                         child: Text(
-                                          'Hoy probablemente llovera',
+                                          hum > 80
+                                              ? 'Hoy probablemente llovera'
+                                              : 'Es posible que no llueva',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily:
@@ -175,12 +232,21 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                         SizedBox(
                                           width: 24,
                                           height: 24,
-                                          child: Image.asset(
-                                              'assets/fitness_app/bell.png'),
+                                          child: hum > 80
+                                              ? Image.asset(
+                                                  'assets/fitness_app/bell.png')
+                                              : Icon(Icons.add_reaction,
+                                                  color: hum > 50
+                                                      ? HexColor('#FFCC31')
+                                                      : HexColor('#4CAF50')),
                                         ),
                                         Flexible(
                                           child: Text(
-                                            'Tome su precausiones!.',
+                                            hum > 80
+                                                ? 'Es muy probable que llueva!.'
+                                                : hum > 50
+                                                    ? 'Tome sus precausiones!.'
+                                                    : 'Es muy poco probable que llueva',
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                               fontFamily:
@@ -188,7 +254,11 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12,
                                               letterSpacing: 0.0,
-                                              color: HexColor('#F65283'),
+                                              color: hum > 80
+                                                  ? HexColor('#F65283')
+                                                  : hum > 50
+                                                      ? HexColor('#FFCC31')
+                                                      : HexColor('#4CAF50'),
                                             ),
                                           ),
                                         ),
@@ -276,7 +346,7 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                             ],
                           ),
                           child: WaveView(
-                            percentageValue: 60.0,
+                            percentageValue: hum,
                           ),
                         ),
                       )
@@ -289,5 +359,17 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  void setH(double data) {
+    setState(() {
+      hum = data;
+    });
+  }
+
+  void setT(double data) {
+    setState(() {
+      temp = data;
+    });
   }
 }

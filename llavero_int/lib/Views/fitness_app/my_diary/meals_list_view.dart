@@ -1,9 +1,8 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:llavero_int/Views/fitness_app/fitness_app_theme.dart';
 import 'package:llavero_int/Views/fitness_app/models/meals_list_data.dart';
 import 'package:llavero_int/main.dart';
 import 'package:flutter/material.dart';
-
-import '../../../main.dart';
 
 class MealsListView extends StatefulWidget {
   const MealsListView(
@@ -21,11 +20,26 @@ class _MealsListViewState extends State<MealsListView>
     with TickerProviderStateMixin {
   AnimationController? animationController;
   List<MealsListData> mealsListData = MealsListData.tabIconsList;
+  DatabaseReference referenceT =
+      FirebaseDatabase.instance.ref("sensorTH/vTemp");
+  DatabaseReference referenceH = FirebaseDatabase.instance.ref("sensorTH/vHum");
+
+  double temp = 0;
+  double hum = 0;
 
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
+    referenceT.onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value;
+      setT(double.parse(data.toString()));
+    });
+    referenceH.onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value;
+      setH(double.parse(data.toString()));
+    });
+
     super.initState();
   }
 
@@ -50,7 +64,7 @@ class _MealsListViewState extends State<MealsListView>
           child: Transform(
             transform: Matrix4.translationValues(
                 0.0, 30 * (1.0 - widget.mainScreenAnimation!.value), 0.0),
-            child: Container(
+            child: SizedBox(
               height: 216,
               width: double.infinity,
               child: ListView.builder(
@@ -81,6 +95,24 @@ class _MealsListViewState extends State<MealsListView>
         );
       },
     );
+  }
+
+  void setH(double data) {
+    setState(() {
+      hum = data;
+      for (var m in mealsListData) {
+        m.titleTxt == 'Humedad' ? m.kacl = hum.toInt() : m.kacl;
+      }
+    });
+  }
+
+  void setT(double data) {
+    setState(() {
+      temp = data;
+      for (var m in mealsListData) {
+        m.titleTxt == 'Temp' ? m.kacl = temp.toInt() : m.kacl;
+      }
+    });
   }
 }
 

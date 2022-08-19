@@ -55,10 +55,32 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
     });
     super.initState();
   }
-
+//Lista con las cards a mostrar en la vista principal
   void addAllListData() {
+    //Numero de cards
     const int count = 9;
-
+    /* listViews.add(
+      TitleView(
+        titleTxt: 'Imagenes recuperadas.',
+        subTxt: 'Fotografias',
+        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+            parent: widget.animationController!,
+            curve:
+                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+        animationController: widget.animationController!,
+      ),
+    );//View para imagenes
+    listViews.add(
+      WaterView(
+        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+                parent: widget.animationController!,
+                curve: Interval((1 / count) * 7, 1.0,
+                    curve: Curves.fastOutSlowIn))),
+        mainScreenAnimationController: widget.animationController!,
+      ),
+    );*/
+    //Carda de estadisticas de pulso
     listViews.add(
       TitleView(
         titleTxt: 'Tablero de estadicas',
@@ -79,6 +101,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         animationController: widget.animationController!,
       ),
     );
+    //Datos de temp, pulso,  
     listViews.add(
       TitleView(
         titleTxt: 'Datos de Hoy',
@@ -104,7 +127,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
 
     listViews.add(
       TitleView(
-        titleTxt: 'Medidas de temperatura',
+        titleTxt: 'Temperatura',
         subTxt: 'Hoy',
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
