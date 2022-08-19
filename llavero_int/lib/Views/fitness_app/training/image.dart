@@ -9,11 +9,12 @@ class ImageFB extends StatefulWidget {
   @override
   State<ImageFB> createState() => _ImageFBState();
 }
-
+//Clase para mostrar imagen obtenida de bd
 class _ImageFBState extends State<ImageFB> {
   @override
   void initState() {
     super.initState();
+    //Se inicializa la conexion a data storage de firebase
     FirebaseImage('gs://llaveroint.appspot.com/data/photo.jpg').preCache();
   }
 
@@ -45,6 +46,7 @@ class _ImageFBState extends State<ImageFB> {
             
           ),
           Image(
+            //Imgene obtenida de la base de datos.
             image: FirebaseImage('gs://llaveroint.appspot.com/data/photo.jpg',
                 shouldCache: true, // The image should be cached (default: True)
                 maxSizeBytes: 3000 * 1000, // 3MB max file size (default: 2.5MB)
