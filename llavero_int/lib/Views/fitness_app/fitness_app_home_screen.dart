@@ -5,6 +5,7 @@ import 'fitness_app_theme.dart';
 import 'my_diary/my_diary_screen.dart';
 import 'package:llavero_int/Views/fitness_app/models/tabIcon_data.dart';
 
+//Clase principal con la estructura para el bottom bar y llama la vista con las cards a mostrar(MyDiaryScreen)
 class FitnessAppHomeScreen extends StatefulWidget {
   @override
   _FitnessAppHomeScreenState createState() => _FitnessAppHomeScreenState();
@@ -14,7 +15,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     with TickerProviderStateMixin {
   //Declaracion del la clase para control de animaciones
   AnimationController? animationController;
-//Lista que almacena los iconos a mostrar en la barra de menu 
+//Lista que almacena los iconos a mostrar en la barra de menu
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   Widget tabBody = Container(
@@ -31,8 +32,9 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     tabIconsList[0].isSelected = true;
 
     animationController = AnimationController(
-      //Duracion de la animacion
-        duration: const Duration(milliseconds: 600), vsync: this);
+        //Duracion de la animacion
+        duration: const Duration(milliseconds: 600),
+        vsync: this);
     tabBody = MyDiaryScreen(animationController: animationController);
     super.initState();
   }
@@ -58,7 +60,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
               return Stack(
                 children: <Widget>[
                   tabBody,
-                  //Menu del fondo 
+                  //Menu del fondo
                   bottomBar(),
                 ],
               );
