@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//Clase modelo con iconos a mostrar en menu de navegacion.
 class TabIconData {
   TabIconData({
     this.imagePath = '',

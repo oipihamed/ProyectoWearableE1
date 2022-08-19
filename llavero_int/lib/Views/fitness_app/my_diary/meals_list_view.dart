@@ -3,7 +3,7 @@ import 'package:llavero_int/Views/fitness_app/fitness_app_theme.dart';
 import 'package:llavero_int/Views/fitness_app/models/meals_list_data.dart';
 import 'package:llavero_int/main.dart';
 import 'package:flutter/material.dart';
-
+//Clase que muestra tarjetas de listado para temp,pulso,humedad, localizacion.
 class MealsListView extends StatefulWidget {
   const MealsListView(
       {Key? key, this.mainScreenAnimationController, this.mainScreenAnimation})
@@ -19,9 +19,12 @@ class MealsListView extends StatefulWidget {
 class _MealsListViewState extends State<MealsListView>
     with TickerProviderStateMixin {
   AnimationController? animationController;
+  //Iconos a mostrar en tarjetas
   List<MealsListData> mealsListData = MealsListData.tabIconsList;
+  //Llamada a base de datos para temperatura
   DatabaseReference referenceT =
       FirebaseDatabase.instance.ref("sensorTH/vTemp");
+      //Llamada a base de datos para humedad.
   DatabaseReference referenceH = FirebaseDatabase.instance.ref("sensorTH/vHum");
 
   double temp = 0;

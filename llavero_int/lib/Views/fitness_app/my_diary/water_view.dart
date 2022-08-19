@@ -3,7 +3,7 @@ import 'package:llavero_int/Views/fitness_app/ui_view/wave_view.dart';
 import 'package:llavero_int/Views/fitness_app/fitness_app_theme.dart';
 import 'package:llavero_int/main.dart';
 import 'package:flutter/material.dart';
-
+//Clase que para mostrar tarjeta de humedad con informacion recuperada de la bd
 class WaterView extends StatefulWidget {
   const WaterView(
       {Key? key, this.mainScreenAnimationController, this.mainScreenAnimation})
@@ -17,25 +17,31 @@ class WaterView extends StatefulWidget {
 }
 
 class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
+//Llamada a campo de bd con info del sensor de temperatura
   DatabaseReference referenceT =
       FirebaseDatabase.instance.ref("sensorTH/vTemp");
+//Llamada a campo de bd con info del sensor de humedad
   DatabaseReference referenceH = FirebaseDatabase.instance.ref("sensorTH/vHum");
-
+//Temperatur en bd
   double temp = 0;
+  //Humedad en bd
   double hum = 0;
   @override
   void initState() {
+    //Se obtiene el dato de la bd y se almacen a en la variable temp meidante la funcion setT
     referenceT.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       setT(double.parse(data.toString()));
     });
+     //Se obtiene el dato de la bd y se almacen a en la variable hum meidante la funcion setH
+   
     referenceH.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       setH(double.parse(data.toString()));
     });
     super.initState();
   }
-
+//Obtiene datos de bd
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
     return true;
@@ -145,7 +151,7 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                     ),
                                   ],
                                 ),
-                                Padding(
+                                Padding(//Muestra diversas vistas en caso de humedad alta o baja
                                   padding: const EdgeInsets.only(
                                       left: 4, top: 2, bottom: 14),
                                   child: Text(
@@ -203,7 +209,7 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 4.0),
-                                        child: Text(
+                                        child: Text(//Muestra texto dependiendo el grado de humedad
                                           hum > 80
                                               ? 'Hoy probablemente llovera'
                                               : 'Es posible que no llueva',
@@ -233,7 +239,7 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
                                           width: 24,
                                           height: 24,
                                           child: hum > 80
-                                              ? Image.asset(
+                                              ? Image.asset(//Muestra imagen dependiendo el grado de humedad
                                                   'assets/fitness_app/bell.png')
                                               : Icon(Icons.add_reaction,
                                                   color: hum > 50
@@ -360,12 +366,13 @@ class _WaterViewState extends State<WaterView> with TickerProviderStateMixin {
       },
     );
   }
-
+//Funcion para asignar valor a variable hum 
   void setH(double data) {
     setState(() {
       hum = data;
     });
   }
+  //Funcion para asignar valor a variable temp 
 
   void setT(double data) {
     setState(() {

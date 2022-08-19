@@ -1,3 +1,4 @@
+//Clases modelo para mostrar vista con imagenes y titulos en tarjetas de vista
 class MealsListData {
   MealsListData({
     this.imagePath = '',

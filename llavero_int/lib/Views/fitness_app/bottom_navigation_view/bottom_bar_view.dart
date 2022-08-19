@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../main.dart';
 import '../models/tabIcon_data.dart';
-
+//Clase que muestra el menu de navegacion 
 class BottomBarView extends StatefulWidget {
   const BottomBarView(
       {Key? key, this.tabIconsList, this.changeIndex, this.addClick})
@@ -22,19 +22,25 @@ class BottomBarView extends StatefulWidget {
 
 class _BottomBarViewState extends State<BottomBarView>
     with TickerProviderStateMixin {
+      //Instancia de la base de datos de tiempo real para lectura de bocina
   DatabaseReference reference =
       FirebaseDatabase.instance.ref().child("ledStatus");
-
+//Indica se la bocina esta encendida 0 apagada 1 encendida
   double ledOn = 0;
+  //Indica la cancion a tocar
   double song = 0;
+  //Indica si la bocina esta apagada 0 encendida 1 apagada
   double ledOff = 0;
   int alarma = 0;
+  //Temperatura
   double temp = 0;
+  //Humedad
   double hum = 0;
   AnimationController? animationController;
 
   @override
   void initState() {
+    //Funcion que obtine el estado de la bocina de la base de datos en tiempo real
     fireBaseData();
 
     animationController = AnimationController(
@@ -221,23 +227,25 @@ class _BottomBarViewState extends State<BottomBarView>
       });
     });
   }
-
+  //Esto se enviara a la base de datos para ser cambiado
+//Encender bocina cambiando valor en bd
   void _turnOnLed() {
     reference.update({
       'ledOn': 1,
     });
-
+//Apagar led
     reference.update({
       'ledOff': 0,
     });
-
+//Se actualiza el valor de la variable 
     setState(() {
       ledOn = 1;
       ledOff = 0;
       alarma = 1;
     });
   }
-
+//Apagar bocina cambiando valor en bd
+ 
   void _turnOffLed() {
     if (song == 0) {
       reference.update({'Song': 1});
@@ -252,7 +260,7 @@ class _BottomBarViewState extends State<BottomBarView>
     reference.update({
       'ledOn': 0,
     });
-
+//Camboa valor de la variable para tocar siguiente cancion
     setState(() {
       if (song == 1) {
         song = 0;
@@ -264,7 +272,7 @@ class _BottomBarViewState extends State<BottomBarView>
       alarma = 0;
     });
   }
-
+//Funcion para obtener el valor en bd para encender o apagar bocina
   Future<void> fireBaseData() async {
     final snapshot = await reference.get();
     if (snapshot.value != null) {
